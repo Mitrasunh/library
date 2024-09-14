@@ -1,0 +1,211 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Library Management API",
+        "description": "API for managing books and members in a library",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8000/",
+            "description": "Demo API Server"
+        }
+    ],
+    "paths": {
+        "/api/books": {
+            "get": {
+                "tags": [
+                    "Books"
+                ],
+                "summary": "Get all available books",
+                "description": "Returns a list of all books with their available quantities (excluding borrowed books)",
+                "operationId": "64ce85f06fc87443a16496268e88cddb",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "code": {
+                                                "type": "string",
+                                                "example": "JK-45"
+                                            },
+                                            "title": {
+                                                "type": "string",
+                                                "example": "Harry Potter"
+                                            },
+                                            "author": {
+                                                "type": "string",
+                                                "example": "J.K Rowling"
+                                            },
+                                            "available_stock": {
+                                                "type": "integer",
+                                                "example": 1
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/borrow": {
+            "post": {
+                "tags": [
+                    "Borrow"
+                ],
+                "summary": "Borrow a book",
+                "description": "Member borrows a book",
+                "operationId": "6d4b5d5e4ac2dd37e44caff5fe1c70eb",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "member_code": {
+                                        "type": "string"
+                                    },
+                                    "book_code": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Book borrowed successfully"
+                    },
+                    "403": {
+                        "description": "Member is penalized or other error"
+                    }
+                }
+            }
+        },
+        "/api/return": {
+            "post": {
+                "tags": [
+                    "Return"
+                ],
+                "summary": "Return a borrowed book",
+                "description": "Member returns a borrowed book",
+                "operationId": "1c93b1f2491f6083794da2a430a1e83a",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "member_code": {
+                                        "type": "string",
+                                        "example": "M001"
+                                    },
+                                    "book_code": {
+                                        "type": "string",
+                                        "example": "JK-45"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Book returned successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "member_code": {
+                                            "type": "string",
+                                            "example": "M001"
+                                        },
+                                        "book_code": {
+                                            "type": "string",
+                                            "example": "JK-45"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Book returned successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Error returning book"
+                    }
+                }
+            }
+        },
+        "/api/members": {
+            "get": {
+                "tags": [
+                    "Members"
+                ],
+                "summary": "Get all members and their borrowed book count",
+                "description": "Returns a list of all members with the number of books they are currently borrowing",
+                "operationId": "3893e96e6912489fff57bcd0c4cac072",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "code": {
+                                                "type": "string",
+                                                "example": "M001"
+                                            },
+                                            "name": {
+                                                "type": "string",
+                                                "example": "Angga"
+                                            },
+                                            "borrowed_books_count": {
+                                                "type": "integer",
+                                                "example": 1
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Books",
+            "description": "Books"
+        },
+        {
+            "name": "Borrow",
+            "description": "Borrow"
+        },
+        {
+            "name": "Return",
+            "description": "Return"
+        },
+        {
+            "name": "Members",
+            "description": "Members"
+        }
+    ]
+}
